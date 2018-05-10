@@ -1,0 +1,36 @@
+{
+  "name": "aemenu-backend",
+  "version": "1.0.0",
+  "description": "The back end of aemenu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "set DEBUG=express:*& set NODE_ENV=development& nodemon --exec npm run babel-node -- ./src/app.js",
+    "babel-node": "babel-node --presets=env"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex-T-1024/aemenu-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alex-T-1024/aemenu-backend/issues"
+  },
+  "homepage": "https://github.com/Alex-T-1024/aemenu-backend#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "eslint": "^4.19.1",
+    "nodemon": "^1.17.4"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "mongodb": "^3.0.7"
+  }
+}
