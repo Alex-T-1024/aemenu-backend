@@ -4,9 +4,10 @@
   "description": "The back end of aemenu",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "set DEBUG=express:*& set NODE_ENV=development& nodemon --exec npm run babel-node -- ./src/app.js",
-    "babel-node": "babel-node --presets=env"
+    "debug": "set DEBUG=express:*& set NODE_ENV=development& nodemon --inspect --exec npm run babel-node --debug -- ./src/app.js --debug",
+    "babel-node": "babel-node"
   },
   "repository": {
     "type": "git",
@@ -21,10 +22,14 @@
   "homepage": "https://github.com/Alex-T-1024/aemenu-backend#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.26.0",
     "eslint": "^4.19.1",
+    "eslint-plugin-jest": "^21.15.1",
+    "jest": "^22.4.3",
     "nodemon": "^1.17.4"
   },
   "dependencies": {

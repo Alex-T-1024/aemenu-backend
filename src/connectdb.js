@@ -18,4 +18,4 @@ const dbPromise = MongoClient.connect(url)
     throw e
   })
 
-export default dbPromise
+export { dbPromise }
