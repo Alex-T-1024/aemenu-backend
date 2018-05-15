@@ -4,6 +4,7 @@
         "stage-2",
         "stage-3"
     ],
+    "sourceMaps": true,
     "ignore": [
         "node_modules"
     ]
