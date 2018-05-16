@@ -1,10 +1,10 @@
-import { dbPromise } from '../connectdb'
-
-dbPromise.then(db => {
-  User.collection = db.collection('users')
-})
+import dbClientObj from '../connectDb'
 
 class User {
+  static initialize() {
+    User.collection = dbClientObj.db.collection('users')
+  }
+
   static collection
 
   static async check(name, password) {
@@ -23,7 +23,7 @@ class User {
 
   static async isExisted(name) {
     let result = await User.collection.find({ name: name }).next()
-    if(result == null) return false
+    if (result == null) return false
     return true
   }
 

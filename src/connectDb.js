@@ -20,14 +20,15 @@ const dbName = 'aemenu'
 //   })
 
 // Async/await version.
-async function initialize() {
+async function initializeDb() {
   let dbclient = await MongoClient.connect(url)
-  client.self = dbclient
-  client.db = dbclient.db(dbName)
-  return client
+  console.log('Db connected!')
+  dbClientObj.client = dbclient
+  dbClientObj.db = dbclient.db(dbName)
+  return dbClientObj
 }
 
-const client = { self: null, db: null }
+const dbClientObj = { client: null, db: null }
 
-export default client
-export { initialize }
+export default dbClientObj
+export { initializeDb }

@@ -33,6 +33,7 @@
             "never"
         ],
         "no-console": "off",
+        "no-unexpected-multiline":"off",
         "no-unused-vars": [
             "warn",
             { "argsIgnorePattern": "^next$" }

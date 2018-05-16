@@ -1,22 +1,41 @@
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import dbPromise from './connectdb'
+import { initializeDb } from './connectDb'
+import User from './models/user'
 import addCliCommand from './util/cli'
-import { safeExit } from './exitHandler'
-import './test' // delete before deploy
+import asyncMiddleware from './util/asyncMiddleware'
+import { addCleanUp, safeExit } from './exitHandler'
 
 const app = express()
 
 app.listen(8080, () => {
-  console.log('DEBUG: ',process.env.DEBUG, process.env.DEBUG.length)
-  console.log('NODE_ENV: ',process.env.NODE_ENV, process.env.NODE_ENV.length)
+  console.log('DEBUG: ', process.env.DEBUG, process.env.DEBUG.length)
+  console.log('NODE_ENV: ', process.env.NODE_ENV, process.env.NODE_ENV.length)
   console.log('Listening on port 8080...\n')
 })
 
-dbPromise.then(db => { app.locals.db = db }).finally(()=>{
+//# region Initialize
+async function initializeApp() {
   addCliCommand('exit', safeExit)
-})
+  try {
+    app.locals.dbClientObj = await initializeDb()
+  } catch (e) {
+    console.error('Connecting db failed', e)
+  }
+  addCleanUp(async () => {
+    try {
+      await app.locals.dbClientObj.client.close()
+      console.log('Db closed!')
+    } catch (e) {
+      console.error('Closing db failed', e)
+    }
+  })
+  User.initialize()
+  console.log('App initializing completed!')
+}
+initializeApp()
+//# endregion Initialize
 
 // #region Global middleware
 app.use(cors())
@@ -25,31 +44,30 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 // #endregion Global middleware
 
-// #region Test
-app.get('/test', (req, res) => {
-  console.log('Get!!')
-  var k = app.locals.db.collection('users')
-  k.find({}).toArray()
-    .then(docs => {
-      console.log(docs)
-    })
-  res.json({ 'a': 1 })
-  console.log('/test done')
-})
 
-app.post('/blob', (req, res) => {
-  console.log('Blob')
-  // res.json({'b':2})
-  res.send('sdfdsf')
-})
+// app.post('/regist', (req, res) => {
+//   let username = req.body.username
+//   let password = req.body.password
+//   let code = 0
+//   if ((code = User.check(username, password)) !== 0) res.json({ success: false, code: code })
+//   let user = new User(username, password)
+//   user.insert().then(()=>{
+//     res.json({ success: true, code: code })
+//   })
+// })
 
-
-// #endregion Test
-
-app.post('/regist', (req, res) => {
-  console.log(req.body)
-  res.json(req.body)
-})
+app.post('/regist', asyncMiddleware(async (req, res) => {
+  let username = req.body.username
+  let password = req.body.password
+  let code = await User.check(username, password)
+  if (code !== 0) {
+    res.json({ success: false, code: code })
+    return
+  }
+  let user = new User(username, password)
+  await user.insert()
+  res.json({ success: true, code: code })
+}))
 
 app.post('/login', (req, res) => {
 
