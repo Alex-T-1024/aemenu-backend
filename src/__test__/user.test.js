@@ -36,4 +36,9 @@ describe('Db status OK', () => {
     expect(await User.check('sihuhenhao')).toBe(1100)
     expect(await User.check('ehduce_3434', 'abcd345ef')).toBe(0)
   })
+
+  test(`${file}Test getUserById function.`, async () => {
+    expect(await User.getUserById('5afc7113b5b16b3c7cdb530e')).not.toBeNull()
+    expect(await User.getUserById('ObjectId not exists')).toBeNull()
+  })
 })

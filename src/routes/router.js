@@ -29,18 +29,23 @@ router.post('/login', asyncMiddleware(async (req, res) => {
   res.json({ success: true, code: 0 })
 }))
 
-router.get('/islogin', (req, res) => {
+router.get('/islogin', (req, res, next) => {
+  next()
+})
+
+router.get('/isAuthenticated', asyncMiddleware(async (req, res) => {
+  console.log('isAuthenticated:', req.session.userId)
   if (!req.session.userId) {
     return res.json({ success: false, code: 1200 })
   }
-  let user = User.getUserById(req.session.userId)
+  let user = await User.getUserById(req.session.userId)
   if (user) {
     user._id = undefined
     return res.json({ success: true, code: 0, user: user })
   } else {
     return res.json({ success: false, code: 1201 })
   }
-})
+}))
 
 router.get('/logout', (req, res) => {
   if (req.session) {

@@ -1,4 +1,5 @@
 import dbClientObj from '../connectDb'
+import { ObjectId } from 'mongodb'
 
 class User {
   static initialize() {
@@ -39,7 +40,7 @@ class User {
 
   static async getUserById(_id) {
     try {
-      let userDoc = await User.collection.findOne({ _id: _id })
+      let userDoc = await User.collection.findOne({ _id: ObjectId(_id) })
       if (!userDoc) return null
       return User.model(userDoc)
     }
