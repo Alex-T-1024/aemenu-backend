@@ -16,8 +16,9 @@ MIT授权的开源项目
 git clone https://github.com/Alex-T-1024/aemenu-backend.git
 npm install
 ```
-
 # Run
+前提：MongoDB已安装，DB链接信息在/src/connectDb.js\
+DB服务器启动后运行下面命令
 ```
 npm run stable
 ```
