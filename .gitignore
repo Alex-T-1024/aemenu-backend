@@ -60,3 +60,4 @@ typings/
 # My custom ignore list
 .vscode/settings.json
 public
+credentials.js
